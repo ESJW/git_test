@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>이지우 졸업작품</title>
+</head>
+<body>
+    <h1>이지우 졸업작품</h1>
+    <input type="text" id="fileContent" placeholder="파일 내용을 입력하세요">
+    <button onclick="saveToFile()">로컬에 txt로 저장</button>
+
+    <script>
+        function saveToFile() {
+            const fileContent = document.getElementById("fileContent").value;
+            
+            // 사용자가 입력한 내용을 JavaScript 변수에 저장합니다.
+            
+            // 이제 파일로 저장할 수 있습니다. 이 예시에서는 Blob을 사용합니다.
+            const blob = new Blob([fileContent], { type: 'text/plain' });
+            const a = document.createElement('a');
+            a.href = window.URL.createObjectURL(blob);
+            a.download = 'myFile.txt';
+            a.style.display = 'none';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(a.href);
+        }
+    </script>
+</body>
+</html>
