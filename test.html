@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Github File Uploader</title>
+</head>
+<body>
+  <h1>Github File Uploader</h1>
+  <textarea id="fileContent" placeholder="파일 내용을 입력하세요"></textarea>
+  <button onclick="uploadToGithub()">GitHub에 업로드</button>
+
+  <script>
+    function uploadToGithub() {
+      const fileContent = document.getElementById("fileContent").value;
+      const data = {
+        content: fileContent,
+        repositoryOwner: 'ESJW',
+        repositoryName: 'git_test',
+        branchName: 'main', // 또는 사용 중인 브랜치 이름
+        filePath: 'path/to/your/file.txt', // 업로드할 파일의 경로
+      };
+
+      fetch('http://localhost:3000/push-to-github', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('업로드 성공', data);
+        })
+        .catch(error => {
+          console.error('업로드 실패', error);
+        });
+    }
+  </script>
+</body>
+</html>
