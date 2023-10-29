@@ -1,22 +1,33 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
+const fs = require('fs');
 const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
-
-app.post('/save-to-local', (req, res) => {
+app.use(cors());
+app.post('/save-to-server', (req, res) => {
     try {
         const { content } = req.body;
-        
-        // 사용자가 입력한 내용을 로컬 파일로 저장합니다.
-        const fs = require('fs');
-        fs.writeFileSync('userFile.txt', content);
 
-        res.status(200).send('파일을 로컬에 성공적으로 저장했습니다.');
+        if (!content) {
+            return res.status(400).send('데이터가 비어 있습니다.');
+        }
+
+        // 파일로 저장
+        fs.writeFile('savedFile.txt', content, (err) => {
+            if (err) {
+                console.error(err);
+                res.status(500).json('파일을 저장하는 중에 오류가 발생했습니다.');
+            } else {
+                console.log('파일이 성공적으로 저장되었습니다.');
+                res.status(200).json({ message: '파일이 성공적으로 저장되었습니다.' });
+            }
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).send('파일을 로컬에 저장하는 중에 오류가 발생했습니다.');
+        res.status(500).json('파일을 저장하는 중에 오류가 발생했습니다.');
     }
 });
 

@@ -2,28 +2,90 @@
 <html>
 <head>
     <title>이지우 졸업작품</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e7e7e1;
+        }
+        h1 {
+            color: #333;
+        }
+        #fileContent {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #e062ff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e062ff;
+        }
+    </style>
 </head>
 <body>
     <h1>이지우 졸업작품</h1>
-    <input type="text" id="fileContent" placeholder="파일 내용을 입력하세요">
-    <button onclick="saveToFile()">로컬에 txt로 저장</button>
+    <br>
+    <tr>
+    <input type="text" id="fileContent" placeholder="도커파일명을 입력하세요"><br><br>
+    </tr>
+    <!-- <button onclick="saveToFile()">로컬에 txt로 저장</button> -->
+    <button onclick="uploadToGithub()">GitHub에 업로드</button>
 
     <script>
         function saveToFile() {
             const fileContent = document.getElementById("fileContent").value;
             
             // 사용자가 입력한 내용을 JavaScript 변수에 저장합니다.
-            
-            // 이제 파일로 저장할 수 있습니다. 이 예시에서는 Blob을 사용합니다.
-            const blob = new Blob([fileContent], { type: 'text/plain' });
-            const a = document.createElement('a');
-            a.href = window.URL.createObjectURL(blob);
-            a.download = 'myFile.txt';
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            window.URL.revokeObjectURL(a.href);
+            fetch('http://localhost:3000/save-to-server', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ content: fileContent }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('서버 응답:', data);
+                // 서버로부터의 응답을 처리
+            })
+            .catch(error => {
+                console.error('오류 발생:', error);
+                // 오류 처리
+            });
         }
+
+        function uploadToGithub() {
+            const fileContent = document.getElementById("fileContent").value;
+            const data = {
+              content: fileContent,
+              repositoryOwner: 'ESJW',
+              repositoryName: 'git_test',
+              branchName: 'main', // 또는 사용 중인 브랜치 이름
+              filePath: 'User/savedFile.txt', // 업로드할 파일의 github에서의 경로
+            };
+      
+            fetch('http://localhost:3000/push-to-github', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            })
+              .then(response => response.json())
+              .then(data => {
+                console.log('업로드 성공', data);
+              })
+              .catch(error => {
+                console.error('업로드 실패', error);
+              });
+          }
     </script>
 </body>
 </html>
