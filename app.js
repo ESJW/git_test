@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // GitHub personal access token
-const githubToken = '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';
+const githubToken = 'ghp_uYCrUm123cjSkbEU1jAVUYsGWtr1D0FbU0fBnHg';
 
 const octokit = new Octokit({
   auth: githubToken,
