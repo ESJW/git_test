@@ -6,7 +6,6 @@ db=db.yaml
 # userfile에서 값 가져오기
 line_number=1
 while IFS= read -r line; do
-line_number=$((line_number + 1))
 case $line_number in
 	1) front_image="$line" ;;
 	2) back_image="$line" ;;
@@ -15,6 +14,7 @@ case $line_number in
 	5) back_port="$line" ;;
 	6) db_port="$line" ;;
 esac
+line_number=$((line_number + 1))
 done < "$file_path"
 
 # 빈 yaml 파일 생성
