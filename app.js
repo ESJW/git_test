@@ -11,7 +11,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // GitHub personal access token
-const githubToken = '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';
+const githubToken = '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';
 
 const octokit = new Octokit({
   auth: githubToken,
@@ -43,15 +43,23 @@ app.post('/save-to-server', (req, res) => {
 
 app.post('/push-to-github', async (req, res) => {
   try {
-    const { content, repositoryOwner, repositoryName, branchName, filePath } = req.body;
+    const { frontContent, backContent, dbContent, frontPort, backPort, dbPort, repositoryOwner, repositoryName, branchName, filePath } = req.body;
 
+    const fileContent = `
+${frontContent}
+${backContent}
+${dbContent}
+${frontPort}
+${backPort}
+${dbPort}
+    `;
     // Create or update a file in a GitHub repository using the GitHub API
     const response = await octokit.repos.createOrUpdateFileContents({
       owner: repositoryOwner,
       repo: repositoryName,
       path: filePath,
       message: 'Add file',
-      content: Buffer.from(content).toString('base64'), // Encode content in base64
+      content: Buffer.from(fileContent + '\n').toString('base64'), // Encode content in base64
       branch: branchName,
     });
 

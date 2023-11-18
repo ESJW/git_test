@@ -11,7 +11,7 @@
         h1 {
             color: #333;
         }
-        #fileContent {
+        .fileContent {
             width: 80%;
             padding: 10px;
             font-size: 16px;
@@ -38,17 +38,17 @@
     <h1>서비스 배포하기</h1>
     <hr class="bold-hr">
     <br>
-    <tr>
-        <input type="text" id="fileContent" placeholder="프론트 도커파일명을 입력하세요"><br><br>
+    <tr class="fileContent">
+        <input type="text" class="fileContent" id="frontFileContent" placeholder="프론트 도커파일명을 입력하세요"><br><br>
     </tr>
-    <tr>
-        <input type="text" id="fileContent" placeholder="백 도커파일명을 입력하세요"><br><br>
-    <input type="text" id="fileContent" placeholder="데이터베이스 도커파일명을 입력하세요"><br><br>
-    <hr>
-    <br>
-    <input type="text" id="fileContent" placeholder="프론트 컨테이너에 연결할 포트를 입력하세요"><br><br>
-    <input type="text" id="fileContent" placeholder="백 컨테이너에 연결할 포트를 입력하세요"><br><br>
-    <input type="text" id="fileContent" placeholder="데이터베이스 컨테이너에 연결할 포트를 입력하세요"><br>
+    <tr class="fileContent">
+        <input type="text" class="fileContent" id="backFileContent" placeholder="백 도커파일명을 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="dbFileContent" placeholder="데이터베이스 도커파일명을 입력하세요"><br><br>
+        <hr>
+        <br>
+        <input type="text" class="fileContent" id="frontPortContent" placeholder="프론트 컨테이너에 연결할 포트를 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="backPortContent" placeholder="백 컨테이너에 연결할 포트를 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="dbPortContent" placeholder="데이터베이스 컨테이너에 연결할 포트를 입력하세요"><br>
     </tr>
     <br><br>
     <!-- <button onclick="saveToFile()">로컬에 txt로 저장</button> -->
@@ -78,13 +78,24 @@
         }
 
         function uploadToGithub() {
-            const fileContent = document.getElementById("fileContent").value;
+            const frontFileContent = document.getElementById("frontFileContent").value;
+            const backFileContent = document.getElementById("backFileContent").value;
+            const dbFileContent = document.getElementById("dbFileContent").value;
+            const frontPortContent = document.getElementById("frontPortContent").value;
+            const backPortContent = document.getElementById("backPortContent").value;
+            const dbPortContent = document.getElementById("dbPortContent").value;
+
             const data = {
-              content: fileContent,
-              repositoryOwner: 'ESJW',
-              repositoryName: 'git_test',
-              branchName: 'main', // 또는 사용 중인 브랜치 이름
-              filePath: 'User/savedFile.txt', // 업로드할 파일의 github에서의 경로
+                frontContent: frontFileContent,
+                backContent: backFileContent,
+                dbContent: dbFileContent,
+                frontPort: frontPortContent,
+                backPort: backPortContent,
+                dbPort: dbPortContent,
+                repositoryOwner: 'ESJW',
+                repositoryName: 'git_test',
+                branchName: 'main', // 또는 사용 중인 브랜치 이름
+                filePath: 'User/savedFile.txt', // 업로드할 파일의 github에서의 경로
             };
       
             fetch('http://localhost:3000/push-to-github', {
