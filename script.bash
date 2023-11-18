@@ -4,7 +4,7 @@ back=backend.yaml
 db=db.yaml
 
 # userfile에서 값 가져오기
-line_number=0
+line_number=1
 while IFS= read -r line; do
 line_number=$((line_number + 1))
 case $line_number in
@@ -199,3 +199,4 @@ if [-n "$db_image" ]; then
 	echo "  selector:" >> $db
 	echo "    app: db" >> $db
 fi
+
