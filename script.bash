@@ -13,6 +13,7 @@ case $line_number in
 	3) db_image="$line" ;;
 	4) front_port="$line" ;;
 	5) back_port="$line" ;;
+	6) db_port="$line" ;;
 esac
 done < "$file_path"
 
@@ -21,7 +22,7 @@ touch $front
 touch $back
 touch $db
 
-if [ -n $front_image]; then
+if [ -n "$front_image" ]; then
 	echo "apiVersion: apps/v1" > $front
 	echo "kind: Deployment" >> $front
 	echo "metadata:" >> $front
@@ -68,7 +69,7 @@ if [ -n $front_image]; then
 	echo "    app: front" >> $front
 fi
 
-if [ -n $back_image]; then
+if [ -n "$back_image" ]; then
 	echo "apiVersion: apps/v1" > $back
 	echo "kind: Deployment" >> $back
 	echo "metadata:" >> $back
@@ -115,7 +116,7 @@ if [ -n $back_image]; then
 	echo "    app: back" >> $back
 fi
 
-if [-n $db_image ]; then
+if [-n "$db_image" ]; then
 	echo "apiVersion: v1" > $db
 	echo "kind: PersistentVolume" >> $db
 	echo "metadata:" >> $db

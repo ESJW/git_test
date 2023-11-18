@@ -27,16 +27,32 @@
         button:hover {
             background-color: #e062ff;
         }
+        .bold-hr {
+        border-top: 5px solid #d562ff; /* 선의 두께와 색상 조절 */
+        margin-top: 20px; /* 구분선과 위쪽 요소 간의 간격 조절 */
+        margin-bottom: 20px; /* 구분선과 아래쪽 요소 간의 간격 조절 */
+        }
     </style>
 </head>
 <body>
-    <h1>Lee Ji-woo’s graduation work</h1>
+    <h1>서비스 배포하기</h1>
+    <hr class="bold-hr">
     <br>
     <tr>
-    <input type="text" id="fileContent" placeholder="도커파일명을 입력하세요"><br><br>
+        <input type="text" id="fileContent" placeholder="프론트 도커파일명을 입력하세요"><br><br>
     </tr>
+    <tr>
+        <input type="text" id="fileContent" placeholder="백 도커파일명을 입력하세요"><br><br>
+    <input type="text" id="fileContent" placeholder="데이터베이스 도커파일명을 입력하세요"><br><br>
+    <hr>
+    <br>
+    <input type="text" id="fileContent" placeholder="프론트 컨테이너에 연결할 포트를 입력하세요"><br><br>
+    <input type="text" id="fileContent" placeholder="백 컨테이너에 연결할 포트를 입력하세요"><br><br>
+    <input type="text" id="fileContent" placeholder="데이터베이스 컨테이너에 연결할 포트를 입력하세요"><br>
+    </tr>
+    <br><br>
     <!-- <button onclick="saveToFile()">로컬에 txt로 저장</button> -->
-    <button onclick="uploadToGithub()">GitHub에 업로드</button>
+    <button onclick="uploadToGithub()">Submit</button>
 
     <script>
         function saveToFile() {
