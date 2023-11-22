@@ -1,0 +1,6 @@
+esjwoo/test2-frontend:1.1
+esjwoo/test2-backend:1.1
+esjwoo/test2-db:1.0
+80
+5000
+27017
