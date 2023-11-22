@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>모니터링 화면</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #e7e7e1;
+        }
+        h1 {
+            color: #333;
+        }
+        .fileContent {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #d562ff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #e062ff;
+        }
+        .bold-hr {
+        border-top: 5px solid #d562ff; /* 선의 두께와 색상 조절 */
+        margin-top: 20px; /* 구분선과 위쪽 요소 간의 간격 조절 */
+        margin-bottom: 20px; /* 구분선과 아래쪽 요소 간의 간격 조절 */
+        }        
+        #output {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .flex-container {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .flex-item {
+            flex: 1;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>서비스 모니터링</h1>
+        <hr class="bold-hr">
+        
+        <div class="flex-container">
+            <button onclick="getServerIP()">Get Server IP</button>
+            <div id="output"></div>
+        </div>
+
+        <div style="margin-bottom: 20px;">
+            <div style="padding: 10px;">
+                <div style="display: flex; justify-content: space-between;">
+                    <!-- monitoring data cards -->
+                    <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); flex: 1; margin-right: 10px; width: 32%;">
+                        <div style="padding: 10px; height: 200px;">
+                            <iframe
+                                src="http://158.180.74.4:3000/d-solo/os6Bh8Omk/kubernetes-cluster123?orgId=1&refresh=30s&from=1700592340350&to=1700594140351&panelId=4"
+                                width="100%"
+                                height="100%"
+                                frameborder="0"
+                            ></iframe>
+                        </div>
+                    </div>
+        
+                    <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); flex: 1; margin-right: 10px; width: 32%;">
+                        <div style="padding: 10px; height: 200px;">
+                            <iframe
+                                src="http://158.180.74.4:3000/d-solo/os6Bh8Omk/kubernetes-cluster123?orgId=1&refresh=30s&from=1700592398141&to=1700594198141&panelId=2"
+                                width="100%"
+                                height="100%"
+                                frameborder="0"
+                            ></iframe>
+                        </div>
+                    </div>
+
+                    <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); flex: 1; margin-right: 10px; width: 32%;">
+                        <div style="padding: 10px; height: 200px;">
+                            <iframe
+                                src="http://158.180.74.4:3000/d-solo/os6Bh8Omk/kubernetes-cluster123?orgId=1&refresh=30s&from=1700592952676&to=1700594752676&panelId=9"
+                                width="100%"
+                                height="100%"
+                                frameborder="0"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 다음 줄 -->
+                <div style="display: flex; justify-content: space-between;">
+                    <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); flex: 1; margin-right: 10px; width: 45%;">
+                        <div style="padding: 10px; height: 200%;">
+                            <iframe
+                                src="http://158.180.74.4:3000/d-solo/os6Bh8Omk/kubernetes-cluster123?orgId=1&refresh=30s&from=1700593374900&to=1700595174900&panelId=7"
+                                width="100%"
+                                height="100%"
+                                frameborder="0"
+                            ></iframe>
+                        </div>
+                    </div>
+
+                    <div style="box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); flex: 1; margin-right: 10px; width: 45%;">
+                        <div style="padding: 10px; height: 200%;">
+                            <iframe
+                                src="http://158.180.74.4:3000/d-solo/os6Bh8Omk/kubernetes-cluster123?orgId=1&refresh=30s&from=1700593401569&to=1700595201569&panelId=3"
+                                width="100%"
+                                height="100%"
+                                frameborder="0"
+                            ></iframe>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function getServerIP() {
+            fetch('http://localhost:3333/getServerIP')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('output').innerText = data;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('output').innerText = 'Error retrieving IP address';
+                });
+        }
+    </script>
+</body>
+</html>

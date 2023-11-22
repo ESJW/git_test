@@ -39,42 +39,25 @@
     <hr class="bold-hr">
     <br>
     <tr class="fileContent">
-        <input type="text" class="fileContent" id="frontFileContent" placeholder="프론트 도커파일명을 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="frontFileContent" placeholder="프론트 도커이미지명을 입력하세요"><br><br>
     </tr>
     <tr class="fileContent">
-        <input type="text" class="fileContent" id="backFileContent" placeholder="백 도커파일명을 입력하세요"><br><br>
-        <input type="text" class="fileContent" id="dbFileContent" placeholder="데이터베이스 도커파일명을 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="backFileContent" placeholder="백 도커이미지명을 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="dbFileContent" placeholder="데이터베이스 도커이미지명을 입력하세요"><br><br>
         <hr>
         <br>
-        <input type="text" class="fileContent" id="frontPortContent" placeholder="프론트 컨테이너에 연결할 포트를 입력하세요"><br><br>
-        <input type="text" class="fileContent" id="backPortContent" placeholder="백 컨테이너에 연결할 포트를 입력하세요"><br><br>
-        <input type="text" class="fileContent" id="dbPortContent" placeholder="데이터베이스 컨테이너에 연결할 포트를 입력하세요"><br>
+        <input type="text" class="fileContent" id="frontPortContent" placeholder="프론트 컨테이너 통신 포트를 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="backPortContent" placeholder="백 컨테이너 통신 포트를 입력하세요"><br><br>
+        <input type="text" class="fileContent" id="dbPortContent" placeholder="데이터베이스 컨테이너 통신 포트를 입력하세요"><br>
     </tr>
     <br><br>
     <!-- <button onclick="saveToFile()">로컬에 txt로 저장</button> -->
-    <button onclick="uploadToGithub()">Submit</button>
+    <button onclick="uploadAndRedirect()">Submit</button>
 
     <script>
-        function saveToFile() {
-            const fileContent = document.getElementById("fileContent").value;
-            
-            // 사용자가 입력한 내용을 JavaScript 변수에 저장합니다.
-            fetch('http://localhost:3000/save-to-server', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ content: fileContent }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('서버 응답:', data);
-                // 서버로부터의 응답을 처리
-            })
-            .catch(error => {
-                console.error('오류 발생:', error);
-                // 오류 처리
-            });
+        function uploadAndRedirect(){
+            uploadToGithub();
+            redirectToNewPage();
         }
 
         function uploadToGithub() {
@@ -98,21 +81,26 @@
                 filePath: 'User/savedFile.txt', // 업로드할 파일의 github에서의 경로
             };
       
-            fetch('http://localhost:3000/push-to-github', {
+            fetch('http://localhost:3333/push-to-github', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
               },
               body: JSON.stringify(data),
             })
-              .then(response => response.json())
-              .then(data => {
-                console.log('업로드 성공', data);
-              })
-              .catch(error => {
-                console.error('업로드 실패', error);
-              });
-          }
+            .then(response => response.json())
+            .then(data => {
+            console.log('업로드 성공', data);
+            })
+            .catch(error => {
+            console.error('업로드 실패', error);
+            });
+        }
+
+        function redirectToNewPage() {
+            // 새로운 페이지로 이동
+            window.location.href = 'monitoring.html';
+        }
     </script>
 </body>
 </html>

@@ -1,21 +1,65 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const { Octokit } = require('@octokit/rest');
+const { Client } = require('ssh2');
 const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
-const port = 3000;
+const port = 3333;
 
 app.use(bodyParser.json());
 app.use(cors());
 
 // GitHub personal access token
-const githubToken = 'ghp_uYCrUm123cjSkbEU1jAVUYsGWtr1D0FbU0fBnHg';
+const githubToken = '';
 
 const octokit = new Octokit({
   auth: githubToken,
 });
+
+app.get('/getServerIP', (req, res) => {
+  getServerIP('test')
+      .then((output) => {
+          res.send(output);
+      })
+      .catch((error) => {
+          console.error(error);
+          res.status(500).send('Error retrieving IP address');
+      });
+});
+
+function getServerIP(namespace) {
+  return new Promise((resolve, reject) => {
+      const conn = new Client();
+
+      conn.on('ready', function () {
+          conn.exec('kubectl get svc front-service -o jsonpath="{.status.loadBalancer.ingress[0].ip}"', function (err, stream) {
+              if (err) reject(err);
+
+              let output = '';
+
+              stream
+                  .on('close', function (code, signal) {
+                      conn.end();
+                      resolve(output);
+                  })
+                  .on('data', function (data) {
+                      output += data.toString();
+                  })
+                  .stderr.on('data', function (data) {
+                      console.log('STDERR: ' + data);
+                      reject(data.toString());
+                  });
+          });
+      }).connect({
+          host: '158.180.74.4',
+          port: 22,
+          username: 'opc',
+          privateKey: require('fs').readFileSync('C:/Users/jiwoo/ssh-key-2023-11-06.key')
+      });
+  });
+}
 
 app.post('/save-to-server', (req, res) => {
   try {
@@ -45,14 +89,12 @@ app.post('/push-to-github', async (req, res) => {
   try {
     const { frontContent, backContent, dbContent, frontPort, backPort, dbPort, repositoryOwner, repositoryName, branchName, filePath } = req.body;
 
-    const fileContent = `
-${frontContent}
+    const fileContent = `${frontContent}
 ${backContent}
 ${dbContent}
 ${frontPort}
 ${backPort}
-${dbPort}
-    `;
+${dbPort}`;
     // Create or update a file in a GitHub repository using the GitHub API
     const response = await octokit.repos.createOrUpdateFileContents({
       owner: repositoryOwner,
