@@ -1,6 +1,0 @@
-esjwoo/test2-front:1.0
-esjwoo/test2-back:1.0
-esjwoo/test2-db:1.0
-80
-5000
-27017
