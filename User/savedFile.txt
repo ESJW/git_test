@@ -1,6 +1,0 @@
-esjwoo/test1-front:1.0
-esjwoo/test1-back:1.0
-
-80
-5000
-
